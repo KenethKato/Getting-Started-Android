@@ -1,0 +1,93 @@
+Part 5
+Section 17
+
+Links:
+https://m3.material.io/libraries/mdc-android/getting-started
+https://mvnrepository.com/artifact/com.google.android.material/material
+
+STEP 1: PREPARE THE PROJECT
+
+** Add the empty activity
+** Add dependency for material design
+
+implementation 'com.google.android.material:material:<version>'
+
+** You can get the latest version from the Maven Central Repo
+
+STEP 2: GO TO THE THEMES AND THEN CHANGE THEM TO MATERIAL DESIGN THEMES
+
+** Change the parent theme
+
+parent="Theme.MaterialComponents.Light.NoActionBar"
+
+STEP 3: ADD A DRAWABLE RESOURCE FILE
+
+** RC drawables add Drawable Resource File
+** Root element should be a shape
+
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/colorSplash"></solid>
+    <corners
+        android:topLeftRadius="40dp"
+        android:topRightRadius="40dp"></corners>
+</shape>
+
+STEP 4: GO TO MAIN ACTIVITY AND PREPARE LAYOUT 
+
+** Make the parent layout a co-ordinator layout
+** Nest a Framelayout in the co-ordinator layout
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home">
+
+    <FrameLayout
+        android:id="@+id/FrameLayoutSheet"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:background="@drawable/bottom_sheet"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_baseline_remove_24"></ImageView>
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+STEP 5: GO TO MAIN ACTIVITY JAVA AND THEN REFACTOR
+
+package com.example.bottom_nav;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.widget.FrameLayout;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+public class home extends AppCompatActivity {
+
+    private BottomSheetBehavior mBottomSheetBehavior;
+    private FrameLayout mBottomSheet;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        mBottomSheet = findViewById(R.id.FrameLayoutSheet);
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
+        mBottomSheetBehavior.setPeekHeight(200);
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+}
+

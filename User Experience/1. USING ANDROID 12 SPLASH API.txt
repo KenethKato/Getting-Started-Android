@@ -1,0 +1,89 @@
+https://developer.android.com/develop/ui/views/launch/splash-screen
+
+*** Creating Animated Vector Drawables
+
+https://www.svgator.com/vector-animation-software
+https://shapeshifter.design/
+https://www.adobe.com/products/animate.html
+https://moho.lostmarble.com/
+
+STEP 1: ADD THE API DEPENDENCY IN APP LEVEL GRADDLE FILE
+
+https://developer.android.com/develop/ui/views/launch/splash-screen/migrate
+
+implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
+
+STEP 2: ADD A THEME FOR YOUR SPLASH SCREEN
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground">@color/colorSplash</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/bus</item>
+        <!-- Set the theme of the Activity that directly follows your splash screen. -->
+        <item name="postSplashScreenTheme">@style/Theme.Splash_api</item> ** Theme.Splash_api can be got from Manifests
+
+    </style>
+
+STEP 3: GO TO MANIFESTS AND THEN CONNECT THE THEME TO THE ACTIVITY YOU WANT
+
+        <activity
+            android:theme="@style/Theme.App.Starting"
+            android:name=".home"
+            android:exported="false" />
+
+STEP 4: GO TO MAIN ACTIVITY AND REFACTOR THE ACTIVITY
+
+
+
+*** To set a condition for the Splash to run
+
+        splashScreen.setKeepOnScreenCondition(new SplashScreen.KeepOnScreenCondition() {
+            @Override
+            public boolean shouldKeepOnScreen() {
+                return false;
+            }
+        });
+
+*** The entire code
+
+package com.example.splash_api;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+
+public class home extends AppCompatActivity {
+
+    private boolean Keep = true;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        splashScreen.setKeepOnScreenCondition(new SplashScreen.KeepOnScreenCondition() {
+            @Override
+            public boolean shouldKeepOnScreen() {
+                return Keep;
+            }
+        });
+
+        Runnable R = new Runnable() {
+            @Override
+            public void run() {
+                Keep = false;
+            }
+        };
+
+        Handler H = new Handler();
+        H.postDelayed(R, 3000);
+
+    }
+
+}
+

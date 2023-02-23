@@ -1,0 +1,91 @@
+Part 5
+Section 5
+
+Links:
+https://m3.material.io/libraries/mdc-android/getting-started
+https://mvnrepository.com/artifact/com.google.android.material/material
+
+STEP 1: PREPARE THE PROJECT
+
+** Add the empty activity
+** Add dependency for material design
+
+implementation 'com.google.android.material:material:<version>'
+
+** You can get the latest version from the Maven Central Repo
+
+STEP 2: GO TO THE THEMES AND THEN CHANGE THEM TO MATERIAL DESIGN THEMES
+
+** Change the parent theme
+
+parent="Theme.MaterialComponents.Light.NoActionBar"
+
+STEP 3: GO TO MAIN ACTIVITY AND PREPARE LAYOUT
+
+** Add a co-ordinator layout in the parent constraint layout
+** Add a FAB inside the co-ordinator layout
+** Add some vector icons
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/colorSplash"
+            android:clickable="true"
+            android:text="Add user"
+            android:textAllCaps="false"
+            app:fabSize="normal"
+            app:icon="@drawable/ic_baseline_save_24"></com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+STEP 4: GO TO MAIN ACTIVITY AND THEN REFACTOR
+
+package com.example.bottom_nav;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.FrameLayout;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+public class home extends AppCompatActivity {
+
+    private FloatingActionButton mFAB;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        mFAB = findViewById(R.id.fab);
+        mFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+}

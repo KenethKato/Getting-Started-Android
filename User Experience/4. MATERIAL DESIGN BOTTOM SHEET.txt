@@ -1,0 +1,185 @@
+Part 5
+Section 17
+
+Links:
+https://m3.material.io/libraries/mdc-android/getting-started
+https://mvnrepository.com/artifact/com.google.android.material/material
+
+STEP 1: PREPARE THE PROJECT
+
+** Add the empty activity
+** Add dependency for material design
+
+implementation 'com.google.android.material:material:<version>'
+
+** You can get the latest version from the Maven Central Repo
+
+STEP 2: GO TO MAIN ACTIVITY AND PREPARE LAYOUT
+
+** Add a co-ordinator layout in the parent constraint layout
+** Add an Appbar Layout inside the co-ordinator layout
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomappbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/colorPrimary"
+            app:navigationIcon="@drawable/ic_baseline_menu_24"></com.google.android.material.bottomappbar.BottomAppBar>
+
+        <include layout="@layout/bottom_sheet"></include>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+STEP 3: CREATE A NEW LAYOUT FILE (For the bottom sheet)
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <LinearLayout
+        android:id="@+id/macbook"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:src="@drawable/ic_baseline_desktop_mac_24"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="4"
+            android:text="MacBook"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/voice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:src="@drawable/ic_baseline_voice_chat_24"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="4"
+            android:text="Voice Chat"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/cloud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:src="@drawable/ic_baseline_wb_cloudy_24"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="4"
+            android:text="Cloud Internet"></TextView>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+STEP 4: GO TO MAIN ACTIVITY JAVA AND THEN REFACTOR
+
+package com.example.materialdesign;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+import android.widget.LinearLayout;
+
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+public class home extends AppCompatActivity {
+
+    private BottomAppBar mBottomAppBar;
+    private LinearLayout mBottomSheet;
+    private BottomSheetBehavior mBottomSheetBehavior;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        mBottomSheet = findViewById(R.id.bottomSheet);
+        mBottomAppBar = findViewById(R.id.bottomappbar);
+        mBottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
+
+        mBottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+            }
+        });
+
+    }
+
+}
+

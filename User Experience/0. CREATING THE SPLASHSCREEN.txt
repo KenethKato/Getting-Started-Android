@@ -1,0 +1,189 @@
+** Working with UI and UX in the android applications (Using Android SplashScreens)
+
+** The splash screen can be developed using the manual way (2 activities) or using the Android Splash API that works for API Level 12
+
+	https://developer.android.com/develop/ui/views/launch/splash-screen
+
+** SECTION 1:  USING THE MANUAL WAY OF DEVELOPING  A SPLASHSCREEN
+
+Step 1: Create a new project
+
+	Add 2 activities (One for splashscreen and the other one will be for the main dashboard)
+	When your application opens, it displays the splashscreen activity first, then the main dashboard next
+
+Step 2: Download and add an icon to your project
+
+	The icon goes to the mipmaps folder
+	Copy and paste it there
+	This icon will be appear on the splashscreen in the centre
+
+Step 3: Open the drawables and add 2 resource layout files for splashscreen (call it splash_drawable_resource) & the other for the dashboard (call it dash_drawable_resource)
+
+	When your creating the layout files, select layer-list
+
+	*** This is the dash_drawable_resource
+
+	<?xml version="1.0" encoding="utf-8"?>
+	<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    	<item android:drawable="@color/white"></item>
+	</layer-list>
+
+	*** This is the splash_drawable_resource
+
+	<?xml version="1.0" encoding="utf-8"?>
+	<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+   	 <item android:drawable="@color/white"></item>
+    	<item>
+        	<bitmap
+            android:gravity="center"
+            android:src="@mipmap/hs" />
+    	</item>
+	</layer-list>
+
+Step 4: Open your styles and create 2 styles (One for the splashscreen and the other for the dashboard)
+
+	<style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+	<item name="android:windowBackground">@drawable/splash_drawable_resource</item>
+   	</style>
+
+	<style name="DashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+          <item name="android:windowBackground">@drawable/dash_drawable_resource</item>
+          </style>
+
+Step 5: Open your manifest file and then set your themes (the ones in step 4) to your activities for the splashscreen activity and dashboard activitity
+
+	<activity android:name=".DashboardActivity" android:theme="@style/DashTheme"></activity>
+	<activity android:name=".SplashActivity" android:theme="@style/SplashTheme"></activity>
+
+Step 6: Open your SplashScreen Activity Java file and then add your Java logic
+
+	** This logic is put inside the oncreate method
+
+	Runnable R = new Runnable() {
+            @Override
+            public void run() {
+                navigate();
+            }
+        };
+
+        Handler H = new Handler();
+        H.postDelayed(R, 3000);
+
+
+  
+	** This method will help to navigate from SplashActivity to DashboardActivity 
+	Put it outside the oncreate method
+
+	public void navigate(){
+
+          Intent E = new Intent(this, DashboardActivity.class);
+          startActivity(E);
+          finish();
+          }
+
+
+** SECTION 2:  USING THE ANDROID SPLASHCREEN API TO DEVELOP  A SPLASHSCREEN
+
+	** It applies from Android 12 and above
+
+Step 1: Create a new project
+
+	** Add one activity only, it will work as the splashscreen (SplashActivity)
+
+Step 2: Add the API dependency to the graddle section of your project
+
+	build.gradle
+
+	android {
+  	 compileSdkVersion 31
+
+	}
+	dependencies {
+ 	
+   	implementation 'androidx.core:core-splashscreen:1.0.0-beta02'	** This is the line am talking about
+	
+	}
+
+Step 3: Download and add an icon to your project
+
+	The icon goes to the mipmaps folder
+	Copy and paste it there
+	This icon will be appear on the splashscreen in the centre
+
+Step 4: Open your styles and create a style for your splashscreen
+
+	** postSplashScreenTheme is the theme that display after the splashscreen appears
+	You can get it from the general theme of the entire application from the Manifest file
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground">@color/colorSplash</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon</item>
+        <!-- Set the theme of the Activity that directly follows your splash screen. -->
+        <item name="postSplashScreenTheme">@style/Theme.Splash_api</item> ** Theme.Splash_api has been got from Manifest file, mine was called Theme.Splash_api
+
+    </style>
+
+Step 5: Open your Manifest file and then connect your splashscreen theme to your desired activity 
+
+	** This theme will be connected to our sole activity that was added in Step 1 (SplashActivity)
+
+        <activity
+            android:theme="@style/Theme.App.Starting"
+            android:name=".SplashActivity"
+            android:exported="false" />
+
+Step 6: Open your SplashScreen Activity Java file and then add your Java logic
+
+	** This is the entire code
+
+*** The entire code
+
+package com.example.splash_api;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+
+public class home extends AppCompatActivity {
+
+    private boolean Keep = true;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        splashScreen.setKeepOnScreenCondition(new SplashScreen.KeepOnScreenCondition() {
+            @Override
+            public boolean shouldKeepOnScreen() {
+                return Keep;
+            }
+        });
+
+
+        Runnable R = new Runnable() {
+            @Override
+            public void run() {
+                Keep = false;
+            }
+        };
+
+        Handler H = new Handler();
+        H.postDelayed(R, 3000);
+
+    }
+
+}
+
+
+	
+
+	
+
+

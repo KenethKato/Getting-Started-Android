@@ -1,0 +1,33 @@
+Part 5
+Section 20
+
+Links:
+https://m3.material.io/libraries/mdc-android/getting-started
+https://mvnrepository.com/artifact/com.google.android.material/material
+
+STEP 1: PREPARE THE PROJECT
+
+** Add the empty activity
+** Add dependency for material design
+
+implementation 'com.google.android.material:material:<version>'
+
+** You can get the latest version from the Maven Central Repo
+
+STEP 2: GO TO THE THEMES AND THEN CHANGE THEM TO MATERIAL DESIGN THEMES
+
+** Change the parent theme
+
+parent="Theme.MaterialComponents.Light.NoActionBar"
+
+STEP 3: ADD 3 EMPTY FRAGMENTS
+
+** RC Layouts, add 3 fragments (blank fragment)
+** Adding a fragment will add a Java class matching the fragment
+
+STEP 4: GO TO MAIN ACTIVITY AND PREPARE LAYOUT
+
+** Change the parent framework to a co-ordinator layout
+
+1:30
+

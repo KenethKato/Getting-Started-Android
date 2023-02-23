@@ -1,0 +1,91 @@
+Part 5
+Section 19
+
+STEP 1: PREPARATION NOTES
+
+*** A snackbar operates in a coordinator layout
+*** It gives it added features like swiping off a screen
+
+STEP 1: PREPARE THE LAYOUT
+
+*** Prepare a CoordinatorLayout
+*** Nest a RelativeLayout in the CoordinatorLayout
+*** Give the CoordinatorLayout an @id
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home"
+    android:id="@+id/clayout">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/OpenSnackbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Open Snackbar"
+            android:textAllCaps="false"
+            android:textSize="20sp">
+        </Button>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+STEP 3: GO TO THE MAIN ACTIVITY AND MODIFY CODE
+
+
+package com.example.widget_example;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+import com.google.android.material.snackbar.Snackbar;
+
+public class home extends AppCompatActivity {
+
+    private CoordinatorLayout mCoordinatorLayout;
+    private Button mButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        mCoordinatorLayout = findViewById(R.id.clayout);
+        mButton = findViewById(R.id.OpenSnackbar);
+
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DisplaySnackBar();
+            }
+        });
+    }
+
+    public void DisplaySnackBar(){
+
+        //Snackbar.LENGTH_INDEFINITE will keep it on indefinitely but  we can swipe it off
+        Snackbar sb = Snackbar.make(mCoordinatorLayout, "Snack message opened", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Snackbar sb_remove = Snackbar.make(mCoordinatorLayout, "Snack message closed", Snackbar.LENGTH_SHORT);
+                        sb_remove.show();
+                    }
+                });
+        sb.show();
+    }
+}

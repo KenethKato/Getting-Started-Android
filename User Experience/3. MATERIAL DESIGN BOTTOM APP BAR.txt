@@ -1,0 +1,155 @@
+Part 5
+Section 1
+
+Links:
+https://m3.material.io/libraries/mdc-android/getting-started
+https://mvnrepository.com/artifact/com.google.android.material/material
+
+STEP 1: PREPARE THE PROJECT
+
+** Add the empty activity
+** Add dependency for material design
+
+implementation 'com.google.android.material:material:<version>'
+
+** You can get the latest version from the Maven Central Repo
+
+STEP 2: GO TO THE THEMES AND THEN CHANGE THEM TO MATERIAL DESIGN THEMES
+
+** Change the parent theme
+
+parent="Theme.MaterialComponents.Light.NoActionBar"
+
+** Add these colors
+
+    <color name="colorPrimary">#03DAC5</color>
+    <color name="colorPrimaryDark">#03DAC5</color>
+    <color name="colorAccent">#03DAC5</color>
+
+STEP 3: GO TO MAIN ACTIVITY AND PREPARE LAYOUT
+
+** Change the parent layout to constraint layout
+** Nest a co-ordinator layout in the constraint layout
+** Add a bottomApp bar and floating action button in the co-ordinator layout
+
+			 *** These properties affect the way the floating action bar behaves or looks like
+            app:fabCradleVerticalOffset="30dp"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="10dp"
+            app:fabAlignmentMode="end"
+            app:fabAnimationMode="slide"
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomappbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/colorPrimary"
+            app:fabAlignmentMode="end"
+            app:fabAnimationMode="slide"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="15dp"
+            app:fabCradleVerticalOffset="10dp"
+            app:navigationIcon="@drawable/ic_baseline_menu_24"></com.google.android.material.bottomappbar.BottomAppBar>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorSplash"
+            app:layout_anchor="@id/bottomappbar"
+            tools:ignore="SpeakableTextPresentCheck">
+
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+STEP 4: ADD A NEW MENU DIRECTORY
+
+** RC res then add Android Resource Directory (choose menu)
+** RC the menu directory you created then add a Menu Resource File
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/app_bar_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="Search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always">
+
+    </item>
+    <item android:title="Help" android:id="@+id/help"></item>
+    <item android:title="Articles" android:id="@+id/article"></item>
+    <item android:title="Log out" android:id="@+id/log"></item>
+
+</menu>
+
+
+STEP 5: GO TO MAIN ACTIVITY AND THEN REFACTOR
+
+package com.example.materialdesign;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.View;
+
+import com.google.android.material.bottomappbar.BottomAppBar;
+
+public class home extends AppCompatActivity {
+
+    private BottomAppBar bottomAppBar;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        bottomAppBar = findViewById(R.id.bottomappbar);
+        setSupportActionBar(bottomAppBar);
+
+        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+				bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+                
+            }
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+}
+
+
+
+
